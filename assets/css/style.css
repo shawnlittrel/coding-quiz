@@ -1,10 +1,46 @@
 body{
-    background-color: #838587;
+    background-color: #cfcfcf;
     margin: 0 auto;
 }
 
+.header-half{
+    display: inline;
+}
 
+#timer{
+    float: right;
+}
 
-.btn{
+.body{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    min-height: 80vh;
 
+}
+
+.question-element{
+    background-color: #04253d;
+    color:#f2f2f2;
+    width: 60%;
+    margin: 20 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#answer-a{
+    max-height: 20vh;
+}
+
+#answer-b{
+    display: none;
+}
+
+#answer-c{
+    display: none;
+}
+
+#answer-d{
+    display: none;
 }
