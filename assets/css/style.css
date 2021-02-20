@@ -33,6 +33,9 @@ body{
     max-height: 20vh;
 }
 
+#answer-a{
+    display: none;
+}
 #answer-b{
     display: none;
 }

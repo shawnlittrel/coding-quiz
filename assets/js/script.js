@@ -1,12 +1,16 @@
 //Define global variables
-var textBody = document.getElementById("question-container");
 var question = document.getElementById("question");
 var answerA = document.getElementById("answer-a");
 var answerB = document.getElementById("answer-b");
 var answerC = document.getElementById("answer-c");
 var answerD = document.getElementById("answer-d");
-var isStarted = 0;
+var isStarted = false;
 var timerDisplay = document.getElementById("timer");
+var startButton = document.getElementById("start");
+var indexFinder = 0
+var score = 0
+var savedAnswer = ''
+var currentCorrectAnswer = ''
 
 //Start timer at 120s and count down from there
 var counter = 120;
@@ -151,19 +155,32 @@ let questionArray = [
 
   {
     q: "What is the function to find the higher value of two numbers?",
-    answers: ["ceil(x, y)", "top(x, y)", "Math.ceil(x, y)", "Math.max(x, y)"],
+    answers: [
+      "ceil(x, y)", 
+      "top(x, y)", 
+      "Math.ceil(x, y)", 
+      "Math.max(x, y)"
+    ],
     correct: "Math.max(x, y)",
   },
 
   {
     q: "Java is the same as JavaScript.",
-    answers: ["True", "False"],
+    answers: [
+      "True", 
+      "False"
+    ],
     correct: "False",
   },
 
   {
     q: "Which event fires when a user clicks on an element?",
-    answers: ["onmouseover", "onmouseclick", "onchange", "onclick"],
+    answers: [
+      "onmouseover", 
+      "onmouseclick", 
+      "onchange", 
+      "onclick"
+    ],
     correct: "onclick",
   },
 
@@ -180,49 +197,118 @@ let questionArray = [
 
   {
     q: "Which operator assigns a value to a variable?",
-    answers: ["x", "-", "+", "="],
+    answers: [
+      "x", 
+      "-", 
+      "+", 
+      "="
+    ],
     correct: "=",
   },
 
   {
     q: "Evaluate the following code: Boolean(10 > 9)",
-    answers: ["false", "null", "NaN", "true"],
+    answers: [
+      "false", 
+      "null", 
+      "NaN", 
+      "true"
+    ],
     correct: "true",
   },
 
   {
     q: "JavaScript is case-sensitive.",
-    answers: ["True", "False"],
+    answers: [
+      "True", 
+      "False"
+    ],
     correct: "True",
   },
 ];
 
 //* FUNCTIONS
+//When start button is clicked
 function startQuiz(){
   //Start game bit to prevent game from being reset
-  isStarted = 1;
-  //Show Answer buttons B-D
+  isStarted = true;
+  //Show Answer buttons A-D
+  answerA.style.display = "block";
   answerB.style.display = "block";
   answerC.style.display = "block";
   answerD.style.display = "block";
-  //Start timer
-  countdown();
-}
 
-//Count down from 120s to 0, then end game
+  //hide start button
+  startButton.style.display = "none";
+  //Start timer
+  countdown();  
+  
+  //Generate question/answer pair and display in window
+};
+
+//Count down from 120s to 0.  If timer hits 0 or user runs out of questions, end game.
 function countdown(){
   var timeInterval = setInterval(function(){
     if(counter >0){
       timerDisplay.textContent = counter;
       counter--;
     }
+    else if(questionArray.length = 0){
+      score = counter;
+      clearInterval(timeInterval);
+      endGame();
+    }
     else{
       timerDisplay.textContent = counter;
       clearInterval(timeInterval);
       endGame();
     }
-  })
+  }, 1000)
+};
+
+//pull random Question out of Array and identify correct answer
+function getQuestion(){
+  indexFinder = Math.floor(Math.random()*questionArray.length);
+  question.textContent = '';
+  question.textContent = questionArray[indexFinder].q;
+  currentCorrectAnswer = questionArray[indexFinder].correct;
+
+  };
+
+//Prep answer buttons to display answer text.  Hide answer buttons C and D for T/F questions
+function getAnswers(){
+  answerA.textContent = '';
+  answerA.textContent = questionArray[indexFinder].answers[0];
+  answerB.textContent = '';
+  answerB.textContent = questionArray[indexFinder].answers[1];
+  answerC.textContent = '';
+  answerC.textContent = questionArray[indexFinder].answers[2];
+  answerD.textContent = '';
+  answerD.textContent = questionArray[indexFinder].answers[3]; 
+
+  if(answerC.textContent === ''){
+    answerC.style.display = "none";
+    answerD.style.display = "none";
+  }
+  else{
+    answerC.style.display = "block";
+    answerD.style.display = "block";
+  };  
+};
+
+//Evaluate whether clicked button is correct and assign points
+function isAnswerCorrect(){
+  if(savedAnswer === currentCorrectAnswer){
+    correctAnswer();
+  }
+  else(wrongAnswer());
 }
+
+function playQuiz(){
+  isAnswerCorrect();
+  getQuestion();
+  getAnswers();
+};
 
 //Add 2 to current timer if a correct answer is selected
 function correctAnswer(){
@@ -236,27 +322,34 @@ function wrongAnswer(){
 
 //Alert user of score, redirect to high scores page, and reset all data
 function endGame(){
-  alert("Congratulations!  You have completed the quiz with a score of " + counter + "points! Please save your score and try again."
+  alert("Congratulations!  You have completed the quiz with a score of " + score + "points! Please save your score and try again.");
   //redirect to high scores page
   counter = 120;
-  isStarted = 0;
+  isStarted = false;
 }
 
 //* EVENT LISTENERS
-if(isStarted = 0){
-answerA.addEventListener("click", startQuiz);}
+//Start button to start timer and generate questions
+startButton.addEventListener("click", startQuiz);
 
+//Check which answer was given and save to variable for later comparison
+answerA.addEventListener("click", function(){;
+  savedAnswer = answerA.textContent;
+  playQuiz();
 
+});
 
+answerB.addEventListener("click", function(){
+  savedAnswer = answerB.textContent;
+  playQuiz();
+});
 
-//Timer runs until it hits 0, then end game
-// if(counter <= 0)
-//     counter = 0;
-//     endGame();
+answerC.addEventListener("click", function(){
+  savedAnswer = answerC.textContent;
+  playQuiz();
+});
 
-//On wrong answer, subtract 10 from timer
-// if(wrongAnswer){
-//     counter - 10;
-// }
-
-//pull random question from question array to display on the screen.  The question should have an identifier attached so it isn't used again.  Or would it be easier to pull it from array entirely and then repopulate array after quiz completion
+answerD. addEventListener("click", function(){
+  savedAnswer = answerD.textContent;
+  playQuiz();
+})
