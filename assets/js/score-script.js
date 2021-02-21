@@ -34,7 +34,6 @@ function displayHighScores(){
 
 //Ask for name to associate with score
 //Push name/score object into array
-debugger;
 function scorePrompt(){
   var playerName = prompt("Add your name to the wall of high scores!");
   console.log('playerName = ', playerName)
