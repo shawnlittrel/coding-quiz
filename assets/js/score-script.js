@@ -3,6 +3,7 @@ var newScoreObj = {};
 var playerName = "";
 var saveButton = document.querySelector("#save");
 var playerScore = localStorage.getItem("playerScore");
+var scoreList = document.querySelector("#score-list");
 
 //Pull items from localStorage and populate array
 function getHighScores(){
@@ -19,7 +20,9 @@ function displayHighScores(){
    for(i = 0; i < highScoreTable.length; i++){
    var scoreRank = document.createElement("li")
    scoreRank.className = ("high-score-item");
-   scoreRank.innerHTML = "Player: "  + highScoreTable.player[i] + " -  Score: " + highScoreTable.score[i];
+   scoreRank.innerHTML = "Player: "  + highScoreTable[i].name + " -  Score: " + highScoreTable[i].score;
+   console.dir(scoreRank);
+   scoreList.appendChild(scoreRank);
    };
 };
 
