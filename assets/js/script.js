@@ -7,13 +7,13 @@ var answerD = document.getElementById("answer-d");
 var isStarted = false;
 var timerDisplay = document.getElementById("timer");
 var startButton = document.getElementById("start");
-var indexFinder = 0
-var score = 0
-var savedAnswer = ''
-var currentCorrectAnswer = ''
+var indexFinder = 0;
+var score = 0;
+var savedAnswer = "";
+var currentCorrectAnswer = "";
 
 //Start timer at 120s and count down from there
-var counter = 120;
+var counter = 3000;
 
 //Array of all questions, possible answers, and correct answer
 let questionArray = [
@@ -155,32 +155,19 @@ let questionArray = [
 
   {
     q: "What is the function to find the higher value of two numbers?",
-    answers: [
-      "ceil(x, y)", 
-      "top(x, y)", 
-      "Math.ceil(x, y)", 
-      "Math.max(x, y)"
-    ],
+    answers: ["ceil(x, y)", "top(x, y)", "Math.ceil(x, y)", "Math.max(x, y)"],
     correct: "Math.max(x, y)",
   },
 
   {
     q: "Java is the same as JavaScript.",
-    answers: [
-      "True", 
-      "False"
-    ],
+    answers: ["True", "False"],
     correct: "False",
   },
 
   {
     q: "Which event fires when a user clicks on an element?",
-    answers: [
-      "onmouseover", 
-      "onmouseclick", 
-      "onchange", 
-      "onclick"
-    ],
+    answers: ["onmouseover", "onmouseclick", "onchange", "onclick"],
     correct: "onclick",
   },
 
@@ -197,39 +184,26 @@ let questionArray = [
 
   {
     q: "Which operator assigns a value to a variable?",
-    answers: [
-      "x", 
-      "-", 
-      "+", 
-      "="
-    ],
+    answers: ["x", "-", "+", "="],
     correct: "=",
   },
 
   {
     q: "Evaluate the following code: Boolean(10 > 9)",
-    answers: [
-      "false", 
-      "null", 
-      "NaN", 
-      "true"
-    ],
+    answers: ["false", "null", "NaN", "true"],
     correct: "true",
   },
 
   {
     q: "JavaScript is case-sensitive.",
-    answers: [
-      "True", 
-      "False"
-    ],
+    answers: ["True", "False"],
     correct: "True",
   },
 ];
 
 //* FUNCTIONS
 //When start button is clicked
-function startQuiz(){
+function startQuiz() {
   //Start game bit to prevent game from being reset
   isStarted = true;
   //Show Answer buttons A-D
@@ -241,88 +215,100 @@ function startQuiz(){
   //hide start button
   startButton.style.display = "none";
   //Start timer
-  countdown();  
-  
+  countdown();
   //Generate question/answer pair and display in window
-};
-
-//Count down from 120s to 0.  If timer hits 0 or user runs out of questions, end game.
-function countdown(){
-  var timeInterval = setInterval(function(){
-    if(counter >0){
-      timerDisplay.textContent = counter;
-      counter--;
-    }
-    else if(questionArray.length = 0){
-      score = counter;
-      clearInterval(timeInterval);
-      endGame();
-    }
-    else{
-      timerDisplay.textContent = counter;
-      clearInterval(timeInterval);
-      endGame();
-    }
-  }, 1000)
-};
-
-//pull random Question out of Array and identify correct answer
-function getQuestion(){
-  indexFinder = Math.floor(Math.random()*questionArray.length);
-  question.textContent = '';
-  question.textContent = questionArray[indexFinder].q;
-  currentCorrectAnswer = questionArray[indexFinder].correct;
-
-  };
-
-//Prep answer buttons to display answer text.  Hide answer buttons C and D for T/F questions
-function getAnswers(){
-  answerA.textContent = '';
-  answerA.textContent = questionArray[indexFinder].answers[0];
-  answerB.textContent = '';
-  answerB.textContent = questionArray[indexFinder].answers[1];
-  answerC.textContent = '';
-  answerC.textContent = questionArray[indexFinder].answers[2];
-  answerD.textContent = '';
-  answerD.textContent = questionArray[indexFinder].answers[3]; 
-
-  if(answerC.textContent === ''){
-    answerC.style.display = "none";
-    answerD.style.display = "none";
-  }
-  else{
-    answerC.style.display = "block";
-    answerD.style.display = "block";
-  };  
-};
-
-//Evaluate whether clicked button is correct and assign points
-function isAnswerCorrect(){
-  if(savedAnswer === currentCorrectAnswer){
-    correctAnswer();
-  }
-  else(wrongAnswer());
-}
-
-function playQuiz(){
-  isAnswerCorrect();
   getQuestion();
   getAnswers();
-};
+}
+
+//Count down from 120s to 0.  If timer hits 0 or user runs out of questions, end game.
+function countdown() {
+  var timeInterval = setInterval(function () {
+    if (counter > 0 && questionArray.length > 0) {
+      timerDisplay.textContent = counter;
+      counter--;
+    } else if (questionArray.length = 0) {
+      score = counter;
+      clearInterval(timeInterval);
+    } else {
+      timerDisplay.textContent = counter;
+      clearInterval(timeInterval);
+      endGame();
+    }
+  }, 1000);
+}
+
+//pull random Question out of Array and identify correct answer
+function getQuestion() {
+  indexFinder = Math.floor(Math.random() * questionArray.length);
+  question.textContent = "";
+  question.textContent = questionArray[indexFinder].q;
+  currentCorrectAnswer = questionArray[indexFinder].correct;
+}
+
+//Prep answer buttons to display answer text.  Hide answer buttons C and D for T/F questions
+function getAnswers() {
+  answerA.textContent = "";
+  answerA.textContent = questionArray[indexFinder].answers[0];
+  answerB.textContent = "";
+  answerB.textContent = questionArray[indexFinder].answers[1];
+  answerC.textContent = "";
+  answerC.textContent = questionArray[indexFinder].answers[2];
+  answerD.textContent = "";
+  answerD.textContent = questionArray[indexFinder].answers[3];
+
+  if (answerC.textContent === "") {
+    answerC.style.display = "none";
+    answerD.style.display = "none";
+  } else {
+    answerC.style.display = "block";
+    answerD.style.display = "block";
+  }
+}
+
+//Evaluate whether clicked button is correct and assign points
+function isAnswerCorrect() {
+  if (savedAnswer === currentCorrectAnswer) {
+    correctAnswer();
+    questionArray.splice(indexFinder, 1);
+  } else {
+    wrongAnswer();
+    questionArray.splice(indexFinder, 1);
+  }
+}
+
+function playQuiz() {
+  debugger;
+  console.log(questionArray.length + " left")
+  if(questionArray.length >= 1){
+    isAnswerCorrect();
+    getQuestion();
+    getAnswers();
+ 
+  }
+  else{
+    isAnswerCorrect();
+    endGame();
+  }
+}
 
 //Add 2 to current timer if a correct answer is selected
-function correctAnswer(){
+function correctAnswer() {
   counter + 2;
 }
 
 //Subtract 10 from current timer if a wrong answer is selected
-function wrongAnswer(){
+function wrongAnswer() {
   counter - 10;
 }
 
 //Alert user of score, redirect to high scores page, and reset all data
-function endGame(){
-  alert("Congratulations!  You have completed the quiz with a score of " + score + "points! Please save your score and try again.");
+function endGame() {
+  alert(
+    "Congratulations!  You have completed the quiz with a score of " +
+      score +
+      "points! Please save your score and try again."
+  );
   //redirect to high scores page
   counter = 120;
   isStarted = false;
@@ -333,23 +319,22 @@ function endGame(){
 startButton.addEventListener("click", startQuiz);
 
 //Check which answer was given and save to variable for later comparison
-answerA.addEventListener("click", function(){;
+answerA.addEventListener("click", function () {
   savedAnswer = answerA.textContent;
   playQuiz();
-
 });
 
-answerB.addEventListener("click", function(){
+answerB.addEventListener("click", function () {
   savedAnswer = answerB.textContent;
   playQuiz();
 });
 
-answerC.addEventListener("click", function(){
+answerC.addEventListener("click", function () {
   savedAnswer = answerC.textContent;
   playQuiz();
 });
 
-answerD. addEventListener("click", function(){
+answerD.addEventListener("click", function () {
   savedAnswer = answerD.textContent;
   playQuiz();
-})
+});
