@@ -1,37 +1,44 @@
 var highScoreTable = [];
 var newScoreObj = {};
-var playerName = "";
 var saveButton = document.querySelector("#save");
 var playerScore = localStorage.getItem("playerScore");
 var scoreList = document.querySelector("#score-list");
 
 //Pull items from localStorage and populate array
 function getHighScores(){
-   var savedHighScores = localStorage.getItem("scores");
-   if (!savedHighScores){
-      return false;
+   highScoreTable = localStorage.getItem("highScoreTable");
+   if (highScoreTable === null){
+      return;
    }
-   highScoreTable = JSON.parse(savedHighScores);
+   else{
+   highScoreTable = JSON.parse(highScoreTable);
+   }
 };
 
 //Display array on page in order of descending score
 function displayHighScores(){
+   if(!highScoreTable){return;}
+   else{
    highScoreTable.sort(function(a, b) {return (b.score - a.score)})
    for(i = 0; i < highScoreTable.length; i++){
    var scoreRank = document.createElement("li")
    scoreRank.className = ("high-score-item");
    scoreRank.innerHTML = "Player: "  + highScoreTable[i].name + " -  Score: " + highScoreTable[i].score;
-   console.dir(scoreRank);
    scoreList.appendChild(scoreRank);
+   };
    };
 };
 
 //Ask for name to associate with score
 //Push name/score object into array
+debugger;
 function scorePrompt(){
-  playerName = prompt("Add your name to the wall of high scores!");
+  var playerName = prompt("Add your name to the wall of high scores!");
+  console.log('playerName = ', playerName)
   newScoreObj = {name: playerName, score: playerScore};
+  console.log(newScoreObj);
   highScoreTable.push(newScoreObj);
+  console.log(highScoreTable);
 };
 
 //Sort array by high score
@@ -44,7 +51,7 @@ function arrayClip(){
 };
 //Save button pushes array to localStorage
 function saveScores(){
-   localStorage.setItem("savedHighScores", JSON.stringify(highScoreTable));
+   localStorage.setItem("highScoreTable", JSON.stringify(highScoreTable));
 };
 
 //event listener to fire when save button is clicked
