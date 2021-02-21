@@ -6,14 +6,17 @@ var scoreList = document.querySelector("#score-list");
 
 //Pull items from localStorage and populate array
 function getHighScores(){
-   highScoreTable = localStorage.getItem("highScoreTable");
-   if (highScoreTable === null){
-      return;
-   }
-   else{
-   highScoreTable = JSON.parse(highScoreTable);
-   }
-};
+     highScoreTable = localStorage.getItem("highScoreTable");
+     console.log("storage: ", highScoreTable)
+     if (!highScoreTable){
+        console.log("storage-if: ", highScoreTable)
+        highScoreTable = [];
+     }
+     else{
+         highScoreTable = JSON.parse(highScoreTable);
+     }
+    console.log("storage-1: ", highScoreTable)
+  };
 
 //Display array on page in order of descending score
 function displayHighScores(){
