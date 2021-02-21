@@ -12,9 +12,6 @@ var score = 0;
 var savedAnswer = "";
 var currentCorrectAnswer = "";
 
-//Start timer at 120s and count down from there
-var counter = 3000;
-
 //Array of all questions, possible answers, and correct answer
 let questionArray = [
   {
@@ -202,6 +199,7 @@ let questionArray = [
 ];
 
 //* FUNCTIONS
+
 //When start button is clicked
 function startQuiz() {
   //Start game bit to prevent game from being reset
@@ -219,24 +217,45 @@ function startQuiz() {
   //Generate question/answer pair and display in window
   getQuestion();
   getAnswers();
-}
+};
 
 //Count down from 120s to 0.  If timer hits 0 or user runs out of questions, end game.
+// function countdown() {
+//   var timeInterval = setInterval(function () {
+//     if (counter > 0 && questionArray.length > 0) {
+//       timerDisplay.textContent = counter;
+//       counter--;
+//     } else if (questionArray.length = 0) {
+//       score = counter;
+//       clearInterval(timeInterval);
+//     } else {
+//       timerDisplay.textContent = counter;
+//       clearInterval(timeInterval);
+//       endGame();
+//     }
+//   }, 1000);
+// }
+
 function countdown() {
-  var timeInterval = setInterval(function () {
-    if (counter > 0 && questionArray.length > 0) {
-      timerDisplay.textContent = counter;
-      counter--;
-    } else if (questionArray.length = 0) {
-      score = counter;
-      clearInterval(timeInterval);
-    } else {
-      timerDisplay.textContent = counter;
+  var timeLeft = 120;
+
+  var timeInterval = setInterval(function() {
+    if(timeLeft > 0 && questionArray.length > 0){
+      timeLeft--;
+    }
+    else if(questionArray.length == 0){
+      score = timeLeft;
       clearInterval(timeInterval);
       endGame();
     }
+    else{
+      clearInterval(timeInterval);
+      score = 0;
+      endGame();
+    }
+    
   }, 1000);
-}
+};
 
 //pull random Question out of Array and identify correct answer
 function getQuestion() {
@@ -269,37 +288,23 @@ function getAnswers() {
 //Evaluate whether clicked button is correct and assign points
 function isAnswerCorrect() {
   if (savedAnswer === currentCorrectAnswer) {
-    correctAnswer();
-    questionArray.splice(indexFinder, 1);
+    timeLeft == timeLeft + 2;
   } else {
-    wrongAnswer();
-    questionArray.splice(indexFinder, 1);
+    timeLeft == timeLeft - 10;
   }
 }
 
+//Check for correct answer, pull previous question out of array, populate new question and answers
 function playQuiz() {
-  debugger;
-  console.log(questionArray.length + " left")
-  if(questionArray.length >= 1){
+  if(questionArray.length > 1){
     isAnswerCorrect();
+    questionArray.splice(indexFinder, 1);
     getQuestion();
     getAnswers();
- 
   }
   else{
     isAnswerCorrect();
-    endGame();
   }
-}
-
-//Add 2 to current timer if a correct answer is selected
-function correctAnswer() {
-  counter + 2;
-}
-
-//Subtract 10 from current timer if a wrong answer is selected
-function wrongAnswer() {
-  counter - 10;
 }
 
 //Alert user of score, redirect to high scores page, and reset all data
@@ -310,7 +315,7 @@ function endGame() {
       "points! Please save your score and try again."
   );
   //redirect to high scores page
-  counter = 120;
+  timeLeft = 120;
   isStarted = false;
 }
 
@@ -337,4 +342,4 @@ answerC.addEventListener("click", function () {
 answerD.addEventListener("click", function () {
   savedAnswer = answerD.textContent;
   playQuiz();
-});
+})
