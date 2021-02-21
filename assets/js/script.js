@@ -8,7 +8,7 @@ var isStarted = false;
 var timerDisplay = document.getElementById("timer");
 var startButton = document.getElementById("start");
 var indexFinder = 0;
-var score = "0";
+var playerScore = "0";
 var savedAnswer = "";
 var currentCorrectAnswer = "";
 var timeLeft = 5000;
@@ -239,24 +239,41 @@ function getQuestion() {
   currentCorrectAnswer = questionArray[indexFinder].correct;
 }
 
-//Prep answer buttons to display answer text.  Hide answer buttons C and D for T/F questions
+//Randomize possible answers. Prep answer buttons to display answer text.
 function getAnswers() {
+  let answerArray = [0, 1, 2, 3];
+  answerArray = answerArray.sort(() => Math.random() - 0.5);
+  console.log(answerArray);
   answerA.textContent = "";
-  answerA.textContent = questionArray[indexFinder].answers[0];
+  answerA.textContent = questionArray[indexFinder].answers[answerArray[0]];
+  console.log(answerA.textContent);
   answerB.textContent = "";
-  answerB.textContent = questionArray[indexFinder].answers[1];
+  answerB.textContent = questionArray[indexFinder].answers[answerArray[1]];
   answerC.textContent = "";
-  answerC.textContent = questionArray[indexFinder].answers[2];
+  answerC.textContent = questionArray[indexFinder].answers[answerArray[2]];
   answerD.textContent = "";
-  answerD.textContent = questionArray[indexFinder].answers[3];
+  answerD.textContent = questionArray[indexFinder].answers[answerArray[3]];
+  
+//Hide any empty answer boxes for T/F questions  
+  if(answerA.textContent === ""){
+    answerA.style.display = "none"
+  }
+  else{answerA.style.display = "block"};
+
+  if(answerB.textContent === ""){
+    answerB.style.display = "none"
+  }
+  else{answerB.style.display = "block"};
 
   if (answerC.textContent === "") {
     answerC.style.display = "none";
-    answerD.style.display = "none";
-  } else {
-    answerC.style.display = "block";
-    answerD.style.display = "block";
+  } 
+  else {answerC.style.display = "block";};
+
+  if (answerD.textContent === ""){
+    answerD.style.display = "none"
   }
+  else{answerD.style.display = "block"};
 }
 
 //Evaluate whether clicked button is correct and assign points
@@ -279,7 +296,8 @@ function playQuiz() {
   else{
     isAnswerCorrect();
     clearInterval(timeInterval);
-    score = timerDisplay.textContent;    
+    playerScore = timerDisplay.textContent;
+    localStorage.setItem("playerScore", playerScore);    
     endGame();
   }
 };
@@ -288,13 +306,13 @@ function playQuiz() {
 function endGame() {
   alert(
     "Congratulations!  You have completed the quiz with a score of " +
-      score +
+      playerScore +
       " points! Please save your score and try again."
   );
-  //redirect to high scores page
-  timeLeft = 120;
-  isStarted = false;
+  window.location.replace('./high-scores.html');
 }
+
+
 
 //* EVENT LISTENERS
 //Start button to start timer and generate questions
