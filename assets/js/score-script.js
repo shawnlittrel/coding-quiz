@@ -36,11 +36,8 @@ function displayHighScores(){
 //Push name/score object into array
 function scorePrompt(){
   var playerName = prompt("Add your name to the wall of high scores!");
-  console.log('playerName = ', playerName)
   newScoreObj = {name: playerName, score: playerScore};
-  console.log(newScoreObj);
   highScoreTable.push(newScoreObj);
-  console.log(highScoreTable);
 };
 
 //Sort array by high score
@@ -49,18 +46,21 @@ function scorePrompt(){
 
 //Delete any items lower than 10th place from array  
 function arrayClip(){
+   if(highScoreTable.length > 10){
    highScoreTable.length = 10;
+   }
+   else{return;}
 };
 //Save button pushes array to localStorage
 function saveScores(){
    localStorage.setItem("highScoreTable", JSON.stringify(highScoreTable));
+   console.log('after save - ', highScoreTable);
 };
 
 //event listener to fire when save button is clicked
 saveButton.addEventListener("click", saveScores);
 
 getHighScores();
-displayHighScores();
 scorePrompt();
 displayHighScores();
 arrayClip();
