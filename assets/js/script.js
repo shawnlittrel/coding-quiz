@@ -8,9 +8,11 @@ var isStarted = false;
 var timerDisplay = document.getElementById("timer");
 var startButton = document.getElementById("start");
 var indexFinder = 0;
-var score = 0;
+var score = "0";
 var savedAnswer = "";
 var currentCorrectAnswer = "";
+var timeLeft = 5000;
+var timeInterval
 
 //Array of all questions, possible answers, and correct answer
 let questionArray = [
@@ -219,41 +221,13 @@ function startQuiz() {
   getAnswers();
 };
 
-//Count down from 120s to 0.  If timer hits 0 or user runs out of questions, end game.
-// function countdown() {
-//   var timeInterval = setInterval(function () {
-//     if (counter > 0 && questionArray.length > 0) {
-//       timerDisplay.textContent = counter;
-//       counter--;
-//     } else if (questionArray.length = 0) {
-//       score = counter;
-//       clearInterval(timeInterval);
-//     } else {
-//       timerDisplay.textContent = counter;
-//       clearInterval(timeInterval);
-//       endGame();
-//     }
-//   }, 1000);
-// }
-
+//Start timer at 120s and count down to 0 if there are still questions left in the array.
 function countdown() {
-  var timeLeft = 120;
-
-  var timeInterval = setInterval(function() {
+  timeInterval = setInterval(function() {
     if(timeLeft > 0 && questionArray.length > 0){
+      timerDisplay.textContent = timeLeft;
       timeLeft--;
-    }
-    else if(questionArray.length == 0){
-      score = timeLeft;
-      clearInterval(timeInterval);
-      endGame();
-    }
-    else{
-      clearInterval(timeInterval);
-      score = 0;
-      endGame();
-    }
-    
+    } 
   }, 1000);
 };
 
@@ -288,9 +262,9 @@ function getAnswers() {
 //Evaluate whether clicked button is correct and assign points
 function isAnswerCorrect() {
   if (savedAnswer === currentCorrectAnswer) {
-    timeLeft == timeLeft + 2;
+    timeLeft = timeLeft + 2;
   } else {
-    timeLeft == timeLeft - 10;
+    timeLeft = timeLeft - 10;
   }
 }
 
@@ -304,15 +278,18 @@ function playQuiz() {
   }
   else{
     isAnswerCorrect();
+    clearInterval(timeInterval);
+    score = timerDisplay.textContent;    
+    endGame();
   }
-}
+};
 
 //Alert user of score, redirect to high scores page, and reset all data
 function endGame() {
   alert(
     "Congratulations!  You have completed the quiz with a score of " +
       score +
-      "points! Please save your score and try again."
+      " points! Please save your score and try again."
   );
   //redirect to high scores page
   timeLeft = 120;
