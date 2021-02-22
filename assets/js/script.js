@@ -11,7 +11,7 @@ var indexFinder = 0;
 var playerScore = "0";
 var savedAnswer = "";
 var currentCorrectAnswer = "";
-var timeLeft = 5000;
+var timeLeft = 120;
 var timeInterval
 
 //Array of all questions, possible answers, and correct answer
