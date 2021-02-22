@@ -16,17 +16,28 @@ body{
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
-    min-height: 80vh;
+    min-height: 60vh;
 
+}
+
+#question{
+    width: 60%;
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+.question-box{
+    margin: 0 auto;
 }
 
 .question-element{
     background-color: #04253d;
     color:#f2f2f2;
     width: 60%;
-    margin: 20 auto;
+    margin: 10px auto;
     padding: 20px;
     border-radius: 10px;
+    font-size: 18px;
 }
 
 #answer-a{
@@ -46,4 +57,17 @@ body{
 
 #answer-d{
     display: none;
+}
+
+.footer{
+    display: flex;
+    height: 40vh;
+}
+
+.footer-text{
+    font-size: 60px;
+    padding: 0 0 0 40%;
+    text-decoration: none;
+    border-left: none;
+    border-right: none;
 }

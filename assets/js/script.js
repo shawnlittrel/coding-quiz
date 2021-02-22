@@ -87,14 +87,14 @@ let questionArray = [
 
   {
     q: "Which is the correct way to write an IF statement in JavaScript?",
-    answers: ["if(i===5)", "if i = 5 then", "if i = 5", "if i == 5 then"],
-    correct: "if(i===5)",
+    answers: ["if(i === 5)", "if i = 5 then", "if i = 5", "if i == 5 then"],
+    correct: "if(i === 5)",
   },
 
   {
     q: "How do we evaluate when to run code any time i is not equal to 5?",
     answers: ["if(i != 5)", "if i <> 5", "if i =! 5 then", "if (i <> 5)"],
-    correct: "if(i != 5",
+    correct: "if(i != 5)",
   },
 
   {
@@ -105,7 +105,7 @@ let questionArray = [
       "for(i = 0; i < 5)",
       "for(i = 0; i < 5; i++)",
     ],
-    correct: "for(i = 0; i < 5; i++",
+    correct: "for(i = 0; i < 5; i++)",
   },
 
   {
@@ -120,14 +120,14 @@ let questionArray = [
   },
 
   {
-    q: "Which is the correct way to comment multiple JavaScript lines?",
+    q: "Saving items to the browser is done through which function?",
     answers: [
-      "/* This comment has \n more than one line */",
-      "//This comment has \n more than one line//",
-      "<!--This comment has \n morethan one line-->",
-      "**This comment has \n more than one line**",
+      'localStorage.getItem("testObject", testObject)',
+      'localStorage.setItem("testObject", testObject)',
+      'localStorage.saveItem("testObject", testObject)',
+      'browserStorage.storeItem("testObject", testObject)',
     ],
-    correct: "/* This comment has \n more than one line */",
+    correct: 'localStorage.setItem("testObject", testObject)',
   },
 
   {
@@ -178,7 +178,7 @@ let questionArray = [
       "v catBreed;",
       "define var catBreed;",
     ],
-    correct: "var catBreed",
+    correct: "var catBreed;",
   },
 
   {
@@ -225,7 +225,7 @@ function startQuiz() {
 function countdown() {
   timeInterval = setInterval(function() {
     if(timeLeft > 0 && questionArray.length > 0){
-      timerDisplay.textContent = timeLeft;
+      timerDisplay.innerText = timeLeft;
       timeLeft--;
     } 
   }, 1000);
@@ -234,8 +234,8 @@ function countdown() {
 //pull random Question out of Array and identify correct answer
 function getQuestion() {
   indexFinder = Math.floor(Math.random() * questionArray.length);
-  question.textContent = "";
-  question.textContent = questionArray[indexFinder].q;
+  question.innerText = "";
+  question.innerText = questionArray[indexFinder].q;
   currentCorrectAnswer = questionArray[indexFinder].correct;
 }
 
@@ -243,34 +243,33 @@ function getQuestion() {
 function getAnswers() {
   let answerArray = [0, 1, 2, 3];
   answerArray = answerArray.sort(() => Math.random() - 0.5);
-  console.log(answerArray);
-  answerA.textContent = "";
-  answerA.textContent = questionArray[indexFinder].answers[answerArray[0]];
-  console.log(answerA.textContent);
-  answerB.textContent = "";
-  answerB.textContent = questionArray[indexFinder].answers[answerArray[1]];
-  answerC.textContent = "";
-  answerC.textContent = questionArray[indexFinder].answers[answerArray[2]];
-  answerD.textContent = "";
-  answerD.textContent = questionArray[indexFinder].answers[answerArray[3]];
+  answerA.innerText = "";
+  answerA.innerText = questionArray[indexFinder].answers[answerArray[0]];
+  answerB.innerText = "";
+  answerB.innerText = questionArray[indexFinder].answers[answerArray[1]];
+  answerC.innerText = "";
+  answerC.innerText = questionArray[indexFinder].answers[answerArray[2]];
+  answerD.innerText = "";
+  answerD.innerText = questionArray[indexFinder].answers[answerArray[3]];
+  
   
 //Hide any empty answer boxes for T/F questions  
-  if(answerA.textContent === ""){
+  if(answerA.innerText === "undefined"){
     answerA.style.display = "none"
   }
   else{answerA.style.display = "block"};
 
-  if(answerB.textContent === ""){
+  if(answerB.innerText === "undefined"){
     answerB.style.display = "none"
   }
   else{answerB.style.display = "block"};
 
-  if (answerC.textContent === "") {
+  if (answerC.innerText === "undefined") {
     answerC.style.display = "none";
   } 
   else {answerC.style.display = "block";};
 
-  if (answerD.textContent === ""){
+  if (answerD.innerText === "undefined"){
     answerD.style.display = "none"
   }
   else{answerD.style.display = "block"};
@@ -280,8 +279,10 @@ function getAnswers() {
 function isAnswerCorrect() {
   if (savedAnswer === currentCorrectAnswer) {
     timeLeft = timeLeft + 2;
+    correctAnswerSplash();
   } else {
     timeLeft = timeLeft - 10;
+    wrongAnswerSplash();
   }
 }
 
@@ -296,7 +297,7 @@ function playQuiz() {
   else{
     isAnswerCorrect();
     clearInterval(timeInterval);
-    playerScore = timerDisplay.textContent;
+    playerScore = timerDisplay.innerText;
     localStorage.setItem("playerScore", playerScore);    
     endGame();
   }
@@ -312,7 +313,22 @@ function endGame() {
   window.location.replace('./high-scores.html');
 }
 
+//Splash graphic for correct/incorrect answers
+function correctAnswerSplash(){
+  var splashText = document.querySelector("#footer")
+  splashText.innerText = "CORRECT!";
+  splashText.style.color = "#009c15";
+  splashText.style.borderTop = "thick double #009c15";
+  splashText.style.borderBottom = "thick double #009c15";
+};
 
+function wrongAnswerSplash(){
+  var splashText = document.querySelector("#footer")
+  splashText.innerText = "INCORRECT!";
+  splashText.style.color = "#d10003";
+  splashText.style.borderTop = " thick double #d10003";
+  splashText.style.borderBottom = " thick double #d10003";
+};
 
 //* EVENT LISTENERS
 //Start button to start timer and generate questions
@@ -320,21 +336,21 @@ startButton.addEventListener("click", startQuiz);
 
 //Check which answer was given and save to variable for later comparison
 answerA.addEventListener("click", function () {
-  savedAnswer = answerA.textContent;
+  savedAnswer = answerA.innerText;
   playQuiz();
 });
 
 answerB.addEventListener("click", function () {
-  savedAnswer = answerB.textContent;
+  savedAnswer = answerB.innerText;
   playQuiz();
 });
 
 answerC.addEventListener("click", function () {
-  savedAnswer = answerC.textContent;
+  savedAnswer = answerC.innerText;
   playQuiz();
 });
 
 answerD.addEventListener("click", function () {
-  savedAnswer = answerD.textContent;
+  savedAnswer = answerD.innerText;
   playQuiz();
 })
