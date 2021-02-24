@@ -7,15 +7,12 @@ var scoreList = document.querySelector("#score-list");
 //Pull items from localStorage and populate array
 function getHighScores(){
      highScoreTable = localStorage.getItem("highScoreTable");
-     console.log("storage: ", highScoreTable)
      if (!highScoreTable){
-        console.log("storage-if: ", highScoreTable)
         highScoreTable = [];
      }
      else{
          highScoreTable = JSON.parse(highScoreTable);
      }
-    console.log("storage-1: ", highScoreTable)
   };
 
 //Display array on page in order of descending score
@@ -54,7 +51,6 @@ function arrayClip(){
 //Save button pushes array to localStorage
 function saveScores(){
    localStorage.setItem("highScoreTable", JSON.stringify(highScoreTable));
-   console.log('after save - ', highScoreTable);
 };
 
 //event listener to fire when save button is clicked

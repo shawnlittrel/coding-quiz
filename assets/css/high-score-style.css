@@ -1,0 +1,27 @@
+*{
+    text-align:center;
+}
+header{
+    font-size: 24px;
+    color: maroon;
+    text-decoration: underline;
+}
+footer a{
+    text-decoration: none;
+    font-size: 20px;
+    color: maroon;
+    
+}
+
+.high-score-item{
+    margin: 0 auto;
+    list-style-position: inside;
+    font-size: 20px;
+    color: #04253d;
+    text-decoration: ;
+    line-height: 1.5;
+}
+
+.question-element{
+    width: 30%;
+}
